@@ -1,0 +1,47 @@
+# API returns a external IP (need for users from private networks)
+ownExternalIp:
+    template: https://api.ipify.org?format=json
+
+# Free geolocation API service
+geoLocation:
+    template: http://api.sypexgeo.net/json/{ip}
+
+# Additional geolocation API service
+geoLocationExtend:
+    template: http://api.db-ip.com/v2/{key}/{ip}
+
+    # API Key for getting data from db-ip.com,
+    parameters:
+        key: #insert key here
+
+weather:
+    # Call current weather data for one location
+    template: http://api.openweathermap.org/data/2.5/weather?q={city}&APPID={key}&units=metric&lang={lang}
+
+    # Parameters for API
+    parameters:
+
+        # Key for getting weather-data from api OPENWEATHER
+        key: #insert key here
+
+        # Default city
+        city: Moscow
+
+        # Default language
+        lang: ru
+
+forecast:
+    # Call forecast weather data for one location
+    template: http://api.openweathermap.org/data/2.5/forecast?q={city}&APPID={key}&units=metric&lang={lang}
+
+    # Parameters for API
+    parameters:
+
+        # Key for getting weather-data from api OPENWEATHER
+        key: #insert key here
+
+        # Default city
+        city: Moscow
+
+        # Language for default
+        lang: ru

@@ -1,0 +1,25 @@
+{
+    "name": "grogg19/weather-component",
+    "description": "Weather project",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Anton Devyatov",
+            "email": "differ@list.ru"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "twig/twig": "^3.3",
+        "symfony/yaml": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src",
+            "Models\\":  "src/Model"
+        },
+        "files": [
+            "helpers/helpers.php"
+        ]
+    }
+}
