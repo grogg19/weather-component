@@ -4,10 +4,7 @@ ini_set('display_errors',true);
 
 require_once __DIR__ .'/bootstrap.php';
 
-use App\Receiver\GeoLocation;
 use App\Receiver\CurrentWeather;
-use App\Receiver\ForecastWeather;
-use App\Receiver\Ip;
 use App\View;
 
 use function Helpers\renderException;
@@ -31,4 +28,3 @@ try {
     // if catch Exception make renderException()
     renderException($e);
 }
-
