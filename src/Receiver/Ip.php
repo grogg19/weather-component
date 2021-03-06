@@ -6,7 +6,6 @@
 namespace App\Receiver;
 
 use App\DataReceiver;
-use function Helpers\printArray;
 
 /**
  * Class Ip
@@ -14,17 +13,15 @@ use function Helpers\printArray;
  */
 class Ip extends DataReceiver
 {
+    private $ip;
+
+    /**
+     * Ip constructor.
+     * @throws \App\Exception\ApiErrorException
+     */
     public function __construct()
     {
         $this->setApiName('ownExternalIp');
-    }
-
-    /**
-     * @return mixed
-     * @throws \App\Exception\ApiErrorException
-     */
-    public function getData()
-    {
 
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             $ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -33,20 +30,21 @@ class Ip extends DataReceiver
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
-
-
-
         $firstSectorIp = explode(".",$ip)[0];
 
         // Если IP частной сети, получим внешний IP
         if (in_array($firstSectorIp, [192, 172, 127, 0]) === true) {
-
-            $ip = $this->getUrlContent();
+            $this->ip = $this->getUrlContent();
         } else {
-            return ['ip' => $ip];
+            $this->ip = $ip;
         }
-
-        return json_decode($ip, true);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return json_decode($this->ip, true);
+    }
 }

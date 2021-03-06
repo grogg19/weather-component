@@ -3,5 +3,4 @@
 /vendor
 /index.php
 /bootstrap.php
-/.htaccess
 /composer.lock

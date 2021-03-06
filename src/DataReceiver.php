@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: diffe
- * Date: 03.03.2021
- * Time: 21:19
+ * class DataReceiver
  */
 
 namespace App;

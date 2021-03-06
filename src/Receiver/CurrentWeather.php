@@ -6,6 +6,9 @@
 namespace App\Receiver;
 
 use App\DataReceiver;
+use App\Receiver\Ip;
+use App\Receiver\GeoLocation;
+use App\Receiver\ExtendedGeoLocation;
 use App\Exception\ApiErrorException;
 
 class CurrentWeather extends DataReceiver
@@ -15,17 +18,21 @@ class CurrentWeather extends DataReceiver
      */
     private $current;
 
+    private $geolocation;
+
     /**
      * CurrentWeather constructor.
-     * @param GeoLocation $geolocation
      * @throws ApiErrorException
      */
-    public function __construct(GeoLocation $geolocation)
+    public function __construct()
     {
-        if($geolocation !== null) {
+        $this->geolocation = new GeoLocation();
+
+        if($this->geolocation !== null) {
             $this->setApiName('current');
-            $this->setParameters($this->getParamsFromRequest($geolocation));
+            $this->setParameters($this->getGeolocationData());
             $this->current = $this->getUrlContent();
+
         } else {
             throw new ApiErrorException('Нет данных геолокации', 400);
         }
@@ -39,7 +46,12 @@ class CurrentWeather extends DataReceiver
         return json_decode($this->current, true);
     }
 
-    public function getParamsFromRequest(GeoLocation $geolocation)
+    /**
+     * Подготовка данных для API Openweather
+     * @param \App\Receiver\GeoLocation $geolocation
+     * @return array
+     */
+    private function prepareDataForApi(GeoLocation $geolocation)
     {
         $geolocation = $geolocation->getObject();
 
@@ -62,5 +74,13 @@ class CurrentWeather extends DataReceiver
                 'country_name' => $geolocation->country->name_en
             ];
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getGeolocationData(): array
+    {
+        return $this->prepareDataForApi($this->geolocation);
     }
 }

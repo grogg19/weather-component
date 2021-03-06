@@ -18,14 +18,13 @@ class GeoLocation extends DataReceiver
 
     /**
      * GeoLocation constructor.
-     * @param Ip $ip
      * @throws ApiErrorException
      */
-    public function __construct(Ip $ip)
+    public function __construct()
     {
         $this->setApiName('geoLocation');
 
-        $ip = $ip->getData();
+        $ip = (new Ip())->getData();
 
         if($ip !== null) {
             $this->setParameters($ip);

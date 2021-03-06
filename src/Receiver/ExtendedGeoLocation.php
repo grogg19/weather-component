@@ -22,15 +22,15 @@ class ExtendedGeoLocation extends DataReceiver
      */
     public function __construct(Ip $ip)
     {
-        $ip = $ip->getData();
-
-        $this->setApiName('geoLocationExtend');
+        $ip = (new Ip())->getData();
 
         if($ip !== null) {
             $this->setParameters($ip);
         } else {
             throw new ApiErrorException('Нет данных IP адреса', 400);
         }
+
+        $this->geolocation = $this->getUrlContent();
     }
 
     /**
@@ -41,6 +41,9 @@ class ExtendedGeoLocation extends DataReceiver
         return json_decode($this->geolocation, true);
     }
 
+    /**
+     * @return mixed
+     */
     public function getObject()
     {
         return json_decode($this->geolocation, false);
