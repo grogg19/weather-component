@@ -17,7 +17,7 @@ try {
     $current = new CurrentWeather(); // Get data of current weather in this geolocation
 
     $view = new View('weather', [
-        'title' => 'Прогноз погоды',
+        'title' => 'Погода сегодня',
         'current' => $current->getData(),
         'geoLocation' => $current->getGeolocationData(),
     ]);
