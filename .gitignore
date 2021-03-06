@@ -1,6 +1,5 @@
 .idea
 /config/api-dev.yaml
 /vendor
-/index.php
 /bootstrap.php
 /composer.lock
