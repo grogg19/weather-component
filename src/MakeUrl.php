@@ -36,7 +36,7 @@ class MakeUrl
     /**
      * @return mixed
      */
-    private function parseUrl()
+    private function parseUrl(): ?string
     {
         if(!empty($this->settings['parameters']))
         {
@@ -52,9 +52,9 @@ class MakeUrl
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getRequestUrl()
+    public function getRequestUrl(): ?string
     {
         return $this->parseUrl();
     }
