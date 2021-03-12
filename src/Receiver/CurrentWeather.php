@@ -10,7 +10,6 @@ use App\Receiver\Ip;
 use App\Receiver\GeoLocation;
 use App\Receiver\ExtendedGeoLocation;
 use App\Exception\ApiErrorException;
-use function Helpers\printArray;
 
 class CurrentWeather extends DataReceiver
 {
@@ -50,7 +49,6 @@ class CurrentWeather extends DataReceiver
 
     /**
      * Подготовка данных для API Openweather
-     * @param \App\Receiver\GeoLocation $geolocation
      * @return array
      */
     private function prepareDataForApi()
