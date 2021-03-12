@@ -34,7 +34,7 @@ class MakeUrl
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
     private function parseUrl(): ?string
     {

@@ -10,6 +10,7 @@ use App\Receiver\Ip;
 use App\Receiver\GeoLocation;
 use App\Receiver\ExtendedGeoLocation;
 use App\Exception\ApiErrorException;
+use function Helpers\printArray;
 
 class CurrentWeather extends DataReceiver
 {
@@ -22,11 +23,12 @@ class CurrentWeather extends DataReceiver
 
     /**
      * CurrentWeather constructor.
+     * @param \App\Receiver\GeoLocation $geoLocation
      * @throws ApiErrorException
      */
-    public function __construct()
+    public function __construct(GeoLocation $geoLocation)
     {
-        $this->geolocation = new GeoLocation();
+        $this->geolocation = $geoLocation->getData();
 
         if($this->geolocation !== null) {
             $this->setApiName('current');
@@ -43,7 +45,7 @@ class CurrentWeather extends DataReceiver
      */
     public function getData()
     {
-        return json_decode($this->current, true);
+        return $this->current;
     }
 
     /**
@@ -51,27 +53,25 @@ class CurrentWeather extends DataReceiver
      * @param \App\Receiver\GeoLocation $geolocation
      * @return array
      */
-    private function prepareDataForApi(GeoLocation $geolocation)
+    private function prepareDataForApi()
     {
-        $geolocation = $geolocation->getObject();
-
-        if ($geolocation->country->iso == 'RU') {
+        if ($this->geolocation->country->iso == 'RU') {
             return [
-                'ip' => $geolocation->ip,
-                'city' => $geolocation->city->name_en,
-                'country' => mb_strtolower($geolocation->country->iso),
-                'lang' => mb_strtolower($geolocation->country->iso),
-                'city_name' => $geolocation->city->name_ru,
-                'country_name' => $geolocation->country->name_ru
+                'ip' => $this->geolocation->ip,
+                'city' => $this->geolocation->city->name_en,
+                'country' => mb_strtolower($this->geolocation->country->iso),
+                'lang' => mb_strtolower($this->geolocation->country->iso),
+                'city_name' => $this->geolocation->city->name_ru,
+                'country_name' => $this->geolocation->country->name_ru
             ];
         } else {
             return [
-                'ip' => $geolocation->ip,
-                'city' => $geolocation->city->name_en,
-                'country' => mb_strtolower($geolocation->country->iso),
-                'lang' => mb_strtolower($geolocation->country->iso),
-                'city_name' => $geolocation->city->name_en,
-                'country_name' => $geolocation->country->name_en
+                'ip' => $this->geolocation->ip,
+                'city' => $this->geolocation->city->name_en,
+                'country' => mb_strtolower($this->geolocation->country->iso),
+                'lang' => mb_strtolower($this->geolocation->country->iso),
+                'city_name' => $this->geolocation->city->name_en,
+                'country_name' => $this->geolocation->country->name_en
             ];
         }
     }
@@ -81,6 +81,6 @@ class CurrentWeather extends DataReceiver
      */
     public function getGeolocationData(): array
     {
-        return $this->prepareDataForApi($this->geolocation);
+        return $this->prepareDataForApi();
     }
 }

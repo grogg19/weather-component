@@ -41,16 +41,11 @@ abstract class DataReceiver
         }
 
         $ch = curl_init();
-
         curl_setopt_array($ch, $this->prepareCurlParameters());
-
         $responseData = curl_exec($ch);
-
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
         curl_close($ch);
-
-        return ($httpcode >= 200 && $httpcode < 300) ? $responseData : false;
+        return ($httpcode >= 200 && $httpcode < 300) ? json_decode($responseData, false) : false;
     }
 
     /**

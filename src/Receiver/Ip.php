@@ -23,18 +23,13 @@ class Ip extends DataReceiver
     {
         $this->setApiName('ownExternalIp');
 
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        }
-        $firstSectorIp = explode(".",$ip)[0];
+        $ip = $this->getIpAddress();
+
+        $firstSectorIp = explode(".", $ip)[0];
 
         // Если IP частной сети, получим внешний IP
         if (in_array($firstSectorIp, [192, 172, 127, 0]) === true) {
-            $this->ip = $this->getUrlContent();
+            $this->ip = $this->getUrlContent()->ip;
         } else {
             $this->ip = $ip;
         }
@@ -45,6 +40,22 @@ class Ip extends DataReceiver
      */
     public function getData()
     {
-        return json_decode($this->ip, true);
+        return $this->ip;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getIpAddress()
+    {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $ip = $_SERVER['HTTP_CLIENT_IP'];
+        }
+
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+
+        return $ip = $_SERVER['REMOTE_ADDR'];
     }
 }

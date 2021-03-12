@@ -18,16 +18,19 @@ class GeoLocation extends DataReceiver
 
     /**
      * GeoLocation constructor.
+     * @param Ip $ip
      * @throws ApiErrorException
      */
-    public function __construct()
+    public function __construct(Ip $ip)
     {
         $this->setApiName('geoLocation');
 
-        $ip = (new Ip())->getData();
-
         if($ip !== null) {
-            $this->setParameters($ip);
+            $this->setParameters(
+                [
+                    'ip' => $ip->getData()
+                ]
+            );
         } else {
             throw new ApiErrorException('Нет данных IP адреса', 400);
         }
@@ -40,11 +43,7 @@ class GeoLocation extends DataReceiver
      */
     public function getData()
     {
-        return json_decode($this->geolocation, true);
+        return $this->geolocation;
     }
 
-    public function getObject()
-    {
-        return json_decode($this->geolocation, false);
-    }
 }

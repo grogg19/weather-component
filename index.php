@@ -5,6 +5,8 @@ ini_set('display_errors',true);
 require_once __DIR__ .'/bootstrap.php';
 
 use App\Receiver\CurrentWeather;
+use App\Receiver\GeoLocation;
+use App\Receiver\Ip;
 use App\View;
 
 use function Helpers\renderException;
@@ -14,7 +16,8 @@ use function Helpers\renderException;
  */
 
 try {
-    $current = new CurrentWeather(); // Get data of current weather in this geolocation
+    $geolocation = new GeoLocation(new Ip());
+    $current = new CurrentWeather($geolocation); // Get data of current weather in this geolocation
 
     $view = new View('weather', [
         'title' => 'Погода сегодня',
